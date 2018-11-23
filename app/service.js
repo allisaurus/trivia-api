@@ -28,6 +28,7 @@ app.use(morgan(':remote-addr - :remote-user [:date[clf]] ":method :url HTTP/:htt
 
 // APIs
 app.use('/api/trivia', trivia);
+app.use('/api/docs', express.static('apidoc'));
 
 // Error handling
 app.use(function(req, res, next) {

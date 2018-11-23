@@ -1,6 +1,6 @@
 FROM node:10.12.0-alpine
 
-RUN npm install -g npm@6.4.1
+RUN npm install -g npm@6.4.1 apidoc@0.17.7
 
 ARG NODE_ENV=production
 ARG PORT=80
@@ -13,6 +13,7 @@ COPY app/package.json app/package-lock.json ./
 RUN npm ci && npm prune --production && npm cache clean --force
 COPY ./app /opt/app
 COPY ./data /opt/data
+RUN apidoc -f "routes/.*\\.js$" -i ./  -o apidoc/
 
 HEALTHCHECK --interval=30s CMD node healthcheck.js
 
