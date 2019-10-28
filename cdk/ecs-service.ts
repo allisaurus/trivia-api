@@ -28,10 +28,14 @@ class TriviaBackendStack extends cdk.Stack {
     const image = ContainerImage.fromEcrRepository(imageRepo, tag)
 
     // Create Fargate service + load balancer
-    new LoadBalancedFargateService(this, 'Service', {
+    const service = new LoadBalancedFargateService(this, 'Service', {
       cluster,
       image,
       publicTasks: true
+    });
+
+    new cdk.Output(this, 'ServiceURL', {
+      value: 'http://' + service.loadBalancer.dnsName
     });
   }
 }

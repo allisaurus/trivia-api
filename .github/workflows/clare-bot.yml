@@ -34,7 +34,7 @@ jobs:
       - name: Create preview environment CloudFormation stack
         run: aws cloudformation deploy --stack-name $PREVIEW_STACK_NAME --template-file template.yml --capabilities CAPABILITY_NAMED_IAM
       - name: Retrieve preview environment URL
-        run: aws cloudformation describe-stacks --stack-name $PREVIEW_STACK_NAME --query 'Stacks[].Outputs[].OutputValue' | grep elb.amazonaws.com
+        run: aws cloudformation describe-stacks --stack-name $PREVIEW_STACK_NAME --query 'Stacks[].Outputs[].OutputValue' | grep "http://"
 
   close-pull-request:
     name: delete-aws-preview
