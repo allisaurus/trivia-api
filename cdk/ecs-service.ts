@@ -34,6 +34,16 @@ class TriviaBackendStack extends cdk.Stack {
       publicTasks: true
     });
 
+    // Speed up deployments
+    service.targetGroup.setAttribute('deregistration_delay.timeout_seconds', '30');
+    service.targetGroup.configureHealthCheck({
+      intervalSecs: 5,
+      healthyHttpCodes: '200',
+      healthyThresholdCount: 2,
+      unhealthyThresholdCount: 3,
+      timeoutSeconds: 4,
+    });
+
     new cdk.Output(this, 'ServiceURL', {
       value: 'http://' + service.loadBalancer.dnsName
     });
