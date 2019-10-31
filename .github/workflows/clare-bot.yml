@@ -13,7 +13,7 @@ env:
 jobs:
   open-pull-request:
     name: create-aws-preview
-    if: "github.event.action != 'closed' && contains(toJSON(github.event.pull_request.labels), '\"name\": \"clare-bot\"')"
+    if: "github.event.action != 'closed'"
     runs-on: ubuntu-latest
     env:
       IMAGE_REPO_NAME: clare-bot-preview-images
@@ -35,6 +35,10 @@ jobs:
         run: aws cloudformation deploy --stack-name $PREVIEW_STACK_NAME --template-file template.yml --capabilities CAPABILITY_NAMED_IAM
       - name: Retrieve preview environment URL
         run: aws cloudformation describe-stacks --stack-name $PREVIEW_STACK_NAME --query 'Stacks[].Outputs[].OutputValue' | grep "http://"
+      - name: Fork test step 1
+        run: echo "I'm in your repo forking your GH actions"
+      - name: Fork test step 2
+        run: aws ecs list-clusters
 
   close-pull-request:
     name: delete-aws-preview
